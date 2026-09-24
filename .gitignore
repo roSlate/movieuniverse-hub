@@ -1,3 +1,4 @@
+backend/storage/
 .env
 node_modules/
 target/
