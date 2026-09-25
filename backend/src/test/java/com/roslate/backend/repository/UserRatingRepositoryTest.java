@@ -100,4 +100,19 @@ class UserRatingRepositoryTest {
         assertThatThrownBy(() -> ratings.saveAndFlush(new UserRating(ana, 603L, 0, date)))
                 .isInstanceOf(ConstraintViolationException.class);
     }
+
+    @Test
+    void findByTmdbIdReturnsTheRatingsOfEveryUserForThatFilm() {
+        ratings.save(new UserRating(ana, 27205L, 9, date));
+        ratings.save(new UserRating(bruno, 27205L, 5, date));
+        ratings.save(new UserRating(ana, 603L, 8, date));
+
+        assertThat(ratings.findByTmdbId(27205L)).extracting(UserRating::getStars)
+                .containsExactlyInAnyOrder(9, 5);
+    }
+
+    @Test
+    void findByTmdbIdReturnsAnEmptyListForAFilmNobodyRated() {
+        assertThat(ratings.findByTmdbId(27205L)).isEmpty();
+    }
 }
