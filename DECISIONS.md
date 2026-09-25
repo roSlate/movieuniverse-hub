@@ -49,3 +49,14 @@ Sources: [IMDb Help](https://help.imdb.com/article/imdb/track-movies-tv/ratings-
 Initial values: a neutral rating of 6.5 (roughly a typical film average) and a weight of 500 votes, meaning that at 500
 real votes a film's own rating and the neutral value count equally. Both are placeholders for now and will be checked
 against a sample of real TMDB data. They are constants in the code, so changing them means editing two numbers.
+
+### TMDB client
+
+**Credential:** the app authenticates with TMDB's API Read Access Token, sent in the `Authorization` header, not the
+  short API key, which would travel in the URL of every request and runs the risk of being seen in logs or error messages;
+
+**Configuration:** the token lives in `.env` (to never be committed) and Spring loads it with one line in
+  `application.properties`, so no extra library is needed. The app must be started from the `backend/` directory;
+
+**Language:** requests use `pt-PT`, so titles and synopses come in Portuguese. For some films TMDB has no
+  Portuguese synopsis, so it may be empty.
