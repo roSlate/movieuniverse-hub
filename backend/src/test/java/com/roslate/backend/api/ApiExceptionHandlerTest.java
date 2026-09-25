@@ -72,4 +72,14 @@ class ApiExceptionHandlerTest {
                 .andExpect(jsonPath("$.detail").value("TMDB could not be reached, please try " +
                         "again later"));
     }
+
+    @Test
+    void aFilmMissingFromTmdbBecomesA404OnTheDetailsEndpointToo() throws Exception {
+        when(movieService.getDetail(999999L)).thenThrow(HttpClientErrorException.create(
+                HttpStatus.NOT_FOUND, "Not Found", HttpHeaders.EMPTY, NO_BODY, StandardCharsets.UTF_8));
+
+        mockMvc.perform(get("/api/movies/999999"))
+                .andExpect(status().isNotFound())
+                .andExpect(jsonPath("$.detail").value("Film not found"));
+    }
 }

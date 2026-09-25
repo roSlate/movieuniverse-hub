@@ -18,6 +18,8 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
+import static org.hamcrest.Matchers.containsString;
+
 @WebMvcTest(MovieController.class)
 class MovieControllerTest {
 
@@ -75,6 +77,49 @@ class MovieControllerTest {
     @Test
     void aMissingTitleIsRejected() throws Exception {
         mockMvc.perform(get("/api/movies/search"))
+                .andExpect(status().isBadRequest());
+    }
+
+    @Test
+    void detailReturnsTheFilmPageAsJson() throws Exception {
+        when(movieService.getDetail(27205L)).thenReturn(new MovieDetail(27205L, "A Origem",
+                "Sonhos.",
+                List.of("Ação", "Ficção científica"), 148, 2010,
+                "https://image.tmdb.org/t/p/w500/abc.jpg",
+                8.4, 37000, 8.0, 2, 8.39, 37002,
+                "Baseada em 37002 votos (TMDB: 37000, utilizadores: 2)."));
+
+        mockMvc.perform(get("/api/movies/27205"))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.tmdbId").value(27205))
+                .andExpect(jsonPath("$.title").value("A Origem"))
+                .andExpect(jsonPath("$.genres.length()").value(2))
+                .andExpect(jsonPath("$.genres[0]").value("Ação"))
+                .andExpect(jsonPath("$.runtimeMinutes").value(148))
+                .andExpect(jsonPath("$.tmdbAverage").value(8.4))
+                .andExpect(jsonPath("$.tmdbVotes").value(37000))
+                .andExpect(jsonPath("$.appAverage").value(8.0))
+                .andExpect(jsonPath("$.appVotes").value(2))
+                .andExpect(jsonPath("$.combinedScore").value(8.39))
+                .andExpect(jsonPath("$.combinedVotes").value(37002))
+                .andExpect(jsonPath("$.combinedExplanation")
+                        .value("Baseada em 37002 votos (TMDB: 37000, utilizadores: 2)."));
+    }
+
+    @Test
+    void aFilmWithoutACombinedScoreShowsNullAndTheExplanation() throws Exception {
+        when(movieService.getDetail(1L)).thenReturn(new MovieDetail(1L, "Sem votos", "", List.of(), null, null, null,
+                0.0, 0, 0.0, 0, null, 0, "Sem votos: não há informação suficiente para calcular uma nota."));
+
+        mockMvc.perform(get("/api/movies/1"))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.combinedScore").value(nullValue()))
+                .andExpect(jsonPath("$.combinedExplanation").value(containsString("não há informação suficiente")));
+    }
+
+    @Test
+    void aFilmIdThatIsNotANumberIsRejected() throws Exception {
+        mockMvc.perform(get("/api/movies/abc"))
                 .andExpect(status().isBadRequest());
     }
 }

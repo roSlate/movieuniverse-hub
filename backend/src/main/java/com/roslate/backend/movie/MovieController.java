@@ -7,6 +7,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.server.ResponseStatusException;
 
+import org.springframework.web.bind.annotation.PathVariable;
+
 import java.util.List;
 
 /**
@@ -34,5 +36,16 @@ public class MovieController {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "The title to search for cannot be empty");
         }
         return movieService.search(title);
+    }
+
+    /**
+     * Gets everything shown on a film's page, including the combined rating.
+     *
+     * @param tmdbId the film's TMDB id
+     * @return the film's page data
+     */
+    @GetMapping("/{tmdbId}")
+    public MovieDetail detail(@PathVariable long tmdbId) {
+        return movieService.getDetail(tmdbId);
     }
 }
