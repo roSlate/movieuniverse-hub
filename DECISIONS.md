@@ -77,3 +77,9 @@ against a sample of real TMDB data. They are constants in the code, so changing 
 The brief asks the app to start with one command. Running the backend and frontend as two separate processes(each its 
 own command) risked not meeting that literally, so we added `run.sh`, which starts both and stops both together on a 
 single Ctrl+C. The two-terminal instructions remain in the README as an alternative for seeing each server's own output.
+
+### Playlist management ("estrela")
+
+The brief describes a ★ on the film card (search/listing or detail page) to add or remove a film from a playlist.
+That needs an "active playlist" concept the UI doesn't have. Instead, adding a film happens from the playlist's own
+page, via an inline search. Same outcome (add/remove a film from a playlist), different entry point.

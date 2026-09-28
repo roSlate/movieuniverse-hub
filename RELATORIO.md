@@ -39,3 +39,19 @@ aqui explicitamente.
 - `GET /api/movies/search` com título vazio é rejeitado com 400, sem chamar a TMDB.
 - `GET /api/movies/{id}` combina a média da TMDB com as notas dos utilizadores da app através da mesma função de
   nota combinada.
+
+### Playlists
+
+- Criar uma playlist cria o utilizador se ainda não existir.
+- Criar uma playlist para um utilizador já existente não duplica o utilizador.
+- Listar playlists devolve apenas as que não estão apagadas.
+- Adicionar um filme já presente na playlist não duplica a entrada.
+- Adicionar e remover um filme funcionam em conjunto, refletidos de imediato na playlist.
+- Remover um filme que não está na playlist não faz nada.
+- Um pedido para uma playlist inexistente é rejeitado com 404.
+
+### Notas dos utilizadores
+
+- Dar uma nota a um filme cria o utilizador se ainda não existir.
+- Dar uma segunda nota ao mesmo filme atualiza a nota existente em vez de duplicar.
+- Notas fora do intervalo 1–10 são rejeitadas.
