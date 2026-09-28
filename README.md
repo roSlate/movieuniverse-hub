@@ -101,3 +101,6 @@ It covers the domain model, repositories, the seed import (including running it 
 network call or token is needed. See `RELATORIO.md` for a case-by-case summary.
 
 ### TMDB attribution
+
+This product uses the TMDB API but is not endorsed or certified by TMDB. Data and images come from
+[TMDB](https://www.themoviedb.org); the same notice and their logo are shown in the app's **Sobre** screen.
