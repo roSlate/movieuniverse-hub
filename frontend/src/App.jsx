@@ -37,7 +37,7 @@ export default function App() {
 
       {view === "search" && <SearchScreen onSelectMovie={handleSelectMovie} />}
       {view === "detail" && (
-        <MovieDetailScreen tmdbId={selectedMovieId} onBack={() => setView("search")} />
+        <MovieDetailScreen tmdbId={selectedMovieId} userName={userName} onBack={() => setView("search")} />
       )}
       {view === "playlists" && (
         <PlaylistsScreen userName={userName} onSelectPlaylist={handleSelectPlaylist} />

@@ -41,3 +41,11 @@ export function addFilmToPlaylist(playlistId, tmdbId) {
 export function removeFilmFromPlaylist(playlistId, tmdbId) {
   return request(`/playlists/${playlistId}/movies/${tmdbId}`, { method: "DELETE" });
 }
+
+export function rateFilm(userName, tmdbId, stars) {
+  return request(`/users/${encodeURIComponent(userName)}/ratings/${tmdbId}`, {
+    method: "PUT",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ stars }),
+  });
+}
