@@ -46,6 +46,9 @@ score = (sum of all rating points + anchor votes × anchor rating) / (total vote
 Sources: [IMDb Help](https://help.imdb.com/article/imdb/track-movies-tv/ratings-faq/G67Y87TFYYP6TWAV),
 [Wikipedia](https://en.wikipedia.org/wiki/Bayesian_average)
 
+Each vote counts the same regardless of its source: a TMDB vote and an app user's vote are pooled together and weighted 
+only by count, not by where they came from.
+
 Initial values: a neutral rating of 6.5 (roughly a typical film average) and a weight of 500 votes, meaning that at 500
 real votes a film's own rating and the neutral value count equally. Both are placeholders for now and will be checked
 against a sample of real TMDB data. They are constants in the code, so changing them means editing two numbers.
@@ -60,3 +63,17 @@ against a sample of real TMDB data. They are constants in the code, so changing 
 
 **Language:** requests use `pt-PT`, so titles and synopses come in Portuguese. For some films TMDB has no
   Portuguese synopsis, so it may be empty.
+
+### Ambiguities in the brief
+
+- Anexo A lists "exportação" as a README topic. It isn't described as a feature anywhere in the functional
+  requirements, so we read it as referring to the OpenAPI/Swagger spec (section 4), not a playlist-export feature.
+- The architecture diagram (section 2) mentions a `popular-films.json` with aggregated data. It isn't referenced
+  anywhere in the functional requirements and doesn't match the provided `seed_playlists.json`, so we treat it as
+  leftover template text and ignore it.
+
+### Starting with only one command
+
+The brief asks the app to start with one command. Running the backend and frontend as two separate processes(each its 
+own command) risked not meeting that literally, so we added `run.sh`, which starts both and stops both together on a 
+single Ctrl+C. The two-terminal instructions remain in the README as an alternative for seeing each server's own output.
